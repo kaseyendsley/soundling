@@ -1,0 +1,57 @@
+# ========================
+# Frontend (Next.js)
+# ========================
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.*
+frontend/.yarn/*
+!frontend/.yarn/patches
+!frontend/.yarn/plugins
+!frontend/.yarn/releases
+!frontend/.yarn/versions
+frontend/coverage
+frontend/.next/
+frontend/out/
+frontend/build
+frontend/.vercel
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# ========================
+# Backend (Django / Python)
+# ========================
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.py[cod]
+backend/*.pyo
+backend/*.pyd
+backend/*.so
+backend/*.egg
+backend/*.egg-info/
+backend/dist/
+backend/build/
+backend/.eggs/
+backend/.venv/
+backend/venv/
+backend/db.sqlite3
+backend/db.sqlite3-journal
+backend/*.log
+backend/local_settings.py
+backend/media/
+backend/staticfiles/
+
+# ========================
+# Environment / Secrets
+# ========================
+.env
+.env.*
+*.env
+
+# ========================
+# OS / IDE
+# ========================
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
