@@ -1,27 +1,41 @@
-# Next.js + Django Fullstack Monorepo Template
+# Soundling
 
-A full-stack monorepo template combining a **Next.js + TypeScript** frontend with a **Django + Django REST Framework** backend.
+Soundling is a fullstack lead generation tool built as a monorepo with a **Next.js** frontend and a **Django** backend.
 
-Use this template as the starting point for new full-stack projects.
-
----
-
-## Stack
-
-| Layer    | Technology                                      |
-|----------|-------------------------------------------------|
-| Frontend | Next.js 15, TypeScript, TailwindCSS, TanStack Query |
-| Backend  | Django 5, Django REST Framework, Poetry         |
+It is designed to help music licensing teams discover newly opened bars, restaurants, and event venues that feature live music, DJs, or karaoke, so they can contact those venues before competitors do.
 
 ---
 
-## Project Structure
+## What Soundling Does
 
-```
-nextjs-django-monorepo-template/
-├── frontend/    # Next.js + TypeScript app
-└── backend/     # Django + DRF API
-```
+- Scans the internet for venues that opened recently (within ~90 days) and feature live music, DJs, or karaoke
+- Pulls data from sources such as Google Maps/Places, Yelp, Eventbrite, local news sites, and public permit filings
+- Stores discovered venues as leads in a central database
+- Provides a dashboard for authenticated users to review and manage leads
+- Supports automated schedule execution on a daily or weekly cadence
+
+> Note: Instagram and Facebook are intentionally out of scope due to scraping restrictions and API limitations.
+
+---
+
+## Tech Stack
+
+- Frontend: Next.js, TypeScript, TailwindCSS, TanStack Query
+- Backend: Django, Django REST Framework, Poetry
+- Database: PostgreSQL (production)
+
+---
+
+## Project Status
+
+Early planning phase. Data sources, notification preferences, and final licensing workflows are still being confirmed with the client.
+
+---
+
+## Repository Structure
+
+- `frontend/` — Next.js application and dashboard UI
+- `backend/` — Django project, REST API, and lead management core
 
 ---
 
@@ -32,13 +46,12 @@ nextjs-django-monorepo-template/
 ```bash
 cd backend
 poetry install
-source $(poetry env info --path)/bin/activate
+poetry shell
 python manage.py migrate
 python manage.py runserver
 ```
 
 API available at: http://127.0.0.1:8000
-Health check: http://127.0.0.1:8000/health/
 
 ### Frontend
 
@@ -49,46 +62,13 @@ npm run dev
 ```
 
 App available at: http://localhost:3000
-Health page: http://localhost:3000/health
 
 ---
 
 ## Requirements
 
 - Python 3.13+
-- [Poetry](https://python-poetry.org/docs/#installation)
+- Poetry
 - Node.js 18+
 - npm
-
----
-
-## Using This Template
-
-### Option A — GitHub "Use this template" button (recommended)
-
-Click **Use this template** on the GitHub repo page, name your new project, and clone it.
-
-### Option B — via `gh` CLI
-
-```bash
-gh repo create my-new-project --template kaseyendsley/nextjs-django-monorepo-template --private --clone
-cd my-new-project
-```
-
-### Option C — manual clone
-
-```bash
-git clone https://github.com/kaseyendsley/nextjs-django-monorepo-template.git my-new-project
-cd my-new-project
-rm -rf .git
-git init
-git add .
-git commit -m "initial commit"
-gh repo create my-new-project --source=. --private --push
-```
-
----
-
-## License
-
-This template is free to use and modify for any personal or professional projects.
+- PostgreSQL for production deployments
