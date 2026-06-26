@@ -48,6 +48,11 @@ backend/staticfiles/
 *.env
 
 # ========================
+# Local context / private notes
+# ========================
+PROJECT_CONTEXT.md
+
+# ========================
 # OS / IDE
 # ========================
 .DS_Store
