@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Righteous } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./QueryProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Poppins: clean rounded geometric sans for all UI text.
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Righteous: retro display face, used sparingly for the wordmark + key headings.
+const righteous = Righteous({
+  variable: "--font-righteous",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -25,7 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${poppins.variable} ${righteous.variable} antialiased`}
+      >
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

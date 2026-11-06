@@ -6,20 +6,38 @@
 // actual table — search/filter/sort/pagination — is delegated to LeadsTable,
 // which is reused unchanged for both views.
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LeadsTable from "./LeadsTable";
+import { useDashboardHeader } from "./DashboardHeaderContext";
+import { getAllLeads } from "@/lib/leadsStore";
+import { MOCK_LEADS } from "@/lib/mock-leads";
 import { LEAD_STATUS_LABELS, type Lead, type LeadStatus } from "@/lib/types";
 
 type View = "active" | "archived";
 
-export default function LeadsDashboard({ leads }: { leads: Lead[] }) {
-  // Track archived leads by id in a Set: a cheap membership check, and it maps
-  // cleanly onto a future `PATCH /leads/:id { archived }` call. Seeded from the
-  // leads that arrive already archived.
+export default function LeadsDashboard() {
+  // Seed with the mock leads for a deterministic server render, then load the
+  // full set (incl. localStorage-added leads) once mounted in the browser.
+  const [leads, setLeads] = useState<Lead[]>(MOCK_LEADS);
+  // Track archived leads by id in a Set: a cheap membership check that maps
+  // cleanly onto a future `PATCH /leads/:id { archived }` call.
   const [archivedIds, setArchivedIds] = useState<Set<string>>(
-    () => new Set(leads.filter((l) => l.archived).map((l) => l.id)),
+    () => new Set(MOCK_LEADS.filter((l) => l.archived).map((l) => l.id)),
   );
   const [view, setView] = useState<View>("active");
+  const { setTitle } = useDashboardHeader();
+
+  useEffect(() => {
+    const all = getAllLeads();
+    setLeads(all);
+    setArchivedIds(new Set(all.filter((l) => l.archived).map((l) => l.id)));
+  }, []);
+
+  // Reflect the current view in the topbar title; reset to "Leads" on leave.
+  useEffect(() => {
+    setTitle(view === "archived" ? "Archived Leads" : "Active Leads");
+    return () => setTitle("Active Leads");
+  }, [view, setTitle]);
 
   function toggleArchived(id: string) {
     setArchivedIds((prev) => {
@@ -46,7 +64,7 @@ export default function LeadsDashboard({ leads }: { leads: Lead[] }) {
   // statuses appear automatically.
   const stats = [
     {
-      label: view === "archived" ? "Archived leads" : "Total leads",
+      label: view === "archived" ? "Total Archived Leads" : "Total Leads",
       value: visibleLeads.length,
     },
     ...(Object.keys(LEAD_STATUS_LABELS) as LeadStatus[]).map((status) => ({
@@ -58,19 +76,12 @@ export default function LeadsDashboard({ leads }: { leads: Lead[] }) {
   return (
     <div className="space-y-6">
       {/* Stats bar + view toggle */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-1 flex-wrap items-center rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm">
-          {stats.map((stat, i) => (
-            <span
-              key={stat.label}
-              className={
-                i > 0
-                  ? "ml-4 border-l border-gray-200 pl-4 text-gray-600"
-                  : "text-gray-600"
-              }
-            >
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="flex flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-1 rounded-2xl border border-stone-200 bg-white px-6 py-3 text-center text-sm">
+          {stats.map((stat) => (
+            <span key={stat.label} className="text-stone-500">
               {stat.label}:{" "}
-              <span className="font-semibold text-gray-900">{stat.value}</span>
+              <span className="font-semibold text-plum-600">{stat.value}</span>
             </span>
           ))}
         </div>
@@ -79,28 +90,20 @@ export default function LeadsDashboard({ leads }: { leads: Lead[] }) {
           <button
             type="button"
             onClick={() => setView("archived")}
-            className="shrink-0 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            className="shrink-0 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-600 hover:border-magenta-300 hover:text-magenta-700"
           >
-            View archived ({archivedCount}) →
+            Archived Leads ({archivedCount}) →
           </button>
         ) : (
           <button
             type="button"
             onClick={() => setView("active")}
-            className="shrink-0 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            className="shrink-0 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-600 hover:border-magenta-300 hover:text-magenta-700"
           >
-            ← Active leads ({activeCount})
+            ← Active Leads ({activeCount})
           </button>
         )}
       </div>
-
-      {/* Heading clarifies which pool you're looking at */}
-      {view === "archived" && (
-        <p className="text-sm text-gray-500">
-          Showing archived leads. These don&apos;t count toward the active
-          dashboard.
-        </p>
-      )}
 
       <LeadsTable
         leads={visibleLeads}

@@ -1,10 +1,9 @@
-// The Leads dashboard route. Thin Server Component: it provides the data and
-// hands it to LeadsDashboard, the Client Component that owns all interactive
-// state (archive toggling, active/archived view, stats, search, sort, filters).
+// The Leads dashboard route. LeadsDashboard is a Client Component that reads
+// leads from the store (mock seed + any added by hand), so this page is just a
+// thin mount point.
 
 import LeadsDashboard from "@/components/LeadsDashboard";
-import { MOCK_LEADS } from "@/lib/mock-leads";
 
 export default function DashboardPage() {
-  return <LeadsDashboard leads={MOCK_LEADS} />;
+  return <LeadsDashboard />;
 }

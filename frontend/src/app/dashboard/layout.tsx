@@ -1,18 +1,22 @@
 // Persistent chrome for every screen under /dashboard.
-// This is a Server Component (no "use client") — it's static structure, so it
-// renders on the server and ships no client JavaScript. Only `children` (the
-// individual page) changes as you navigate; the sidebar + header stay mounted.
+// Server Component (static structure). The nav links live in DashboardNav (a
+// Client Component) so they can highlight the current page. Responsive: a
+// sidebar on md+ screens collapses to a compact top nav bar on phones.
 
-import Link from "next/link";
+import DashboardNav from "@/components/DashboardNav";
+import SidebarUser from "@/components/SidebarUser";
+import {
+  DashboardHeaderProvider,
+  DashboardTitle,
+} from "@/components/DashboardHeaderContext";
 
-// Nav items. Only "Leads" is wired up today; the rest are placeholders that
-// telegraph where the app is headed (and keep the layout honest about scope).
-const NAV_ITEMS = [
-  { label: "Leads", href: "/dashboard", active: true },
-  { label: "Schedule", href: "#", active: false },
-  { label: "Sources", href: "#", active: false },
-  { label: "Settings", href: "#", active: false },
-];
+function Wordmark() {
+  return (
+    <span className="font-display text-2xl tracking-wide text-magenta-300">
+      Soundling
+    </span>
+  );
+}
 
 export default function DashboardLayout({
   children,
@@ -20,41 +24,41 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-900">
-      {/* Sidebar */}
-      <aside className="flex w-60 flex-col border-r border-gray-200 bg-white">
-        <div className="flex h-16 items-center border-b border-gray-200 px-6">
-          <span className="text-lg font-semibold tracking-tight">Soundling</span>
+    <DashboardHeaderProvider>
+      <div className="flex min-h-screen flex-col bg-cream text-ink md:flex-row">
+      {/* Sidebar — md and up */}
+      {/* sticky + h-screen keeps the user block pinned to the bottom while the page scrolls */}
+      <aside className="sticky top-0 hidden h-screen w-52 shrink-0 flex-col border-r border-plum-800 bg-plum-900 md:flex">
+        {/* Same height as the desktop header so the wordmark lines up with the title */}
+        <div className="flex h-[70px] items-center px-6">
+          <Wordmark />
         </div>
-        <nav className="flex flex-col gap-1 p-3">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              aria-disabled={!item.active}
-              className={
-                item.active
-                  ? "rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-900"
-                  : "cursor-default rounded-md px-3 py-2 text-sm font-medium text-gray-400"
-              }
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="mt-auto border-t border-gray-200 p-4 text-xs text-gray-400">
-          Lead generation for music licensing
+        <DashboardNav variant="sidebar" />
+        <div className="mt-auto">
+          <SidebarUser variant="sidebar" />
         </div>
       </aside>
 
-      {/* Main column: top header bar + the page content */}
+      {/* Mobile top bar — below md */}
+      <header className="bg-plum-900 px-5 py-3 md:hidden">
+        <div className="flex items-center justify-between">
+          <Wordmark />
+          <SidebarUser variant="compact" />
+        </div>
+        <DashboardNav variant="mobile" />
+      </header>
+
+      {/* Main column */}
       <div className="flex flex-1 flex-col">
-        <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-8">
-          <h1 className="text-base font-semibold">Leads</h1>
-          <span className="text-sm text-gray-500">Kasey</span>
+        {/* Desktop header — sticky so it stays pinned while the page scrolls;
+            z-10 keeps table content (e.g. the venue cells' link overlays)
+            sliding *under* it rather than over it. */}
+        <header className="sticky top-0 z-10 hidden h-[70px] items-center bg-plum-900 px-8 md:flex">
+          <DashboardTitle />
         </header>
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 p-5 sm:p-8">{children}</main>
       </div>
-    </div>
+      </div>
+    </DashboardHeaderProvider>
   );
 }

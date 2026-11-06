@@ -4,17 +4,17 @@
 import { LEAD_STATUS_LABELS, type LeadStatus } from "@/lib/types";
 
 const STATUS_STYLES: Record<LeadStatus, string> = {
-  new: "bg-blue-50 text-blue-700 ring-blue-600/20",
+  new: "bg-magenta-50 text-magenta-700 ring-magenta-600/20",
   reached_out: "bg-amber-50 text-amber-700 ring-amber-600/20",
-  in_communication: "bg-purple-50 text-purple-700 ring-purple-600/20",
-  licensed: "bg-green-50 text-green-700 ring-green-600/20",
-  declined: "bg-gray-100 text-gray-600 ring-gray-500/20",
+  in_communication: "bg-violet-50 text-violet-700 ring-violet-600/20",
+  licensed: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
+  declined: "bg-stone-100 text-stone-500 ring-stone-500/20",
 };
 
 export function StatusBadge({ status }: { status: LeadStatus }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${STATUS_STYLES[status]}`}
+      className={`inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${STATUS_STYLES[status]}`}
     >
       {LEAD_STATUS_LABELS[status]}
     </span>

@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
+/* Soundling design tokens.
+   Warm 70s palette: cream canvas, white surfaces, magenta hero, plum ink,
+   deep plum chrome. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf4ee; /* warm cream */
+  --foreground: #2b1b29; /* deep plum ink */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cream: #faf4ee;
+  --color-ink: #2b1b29;
+  /* Brand magenta — deep + true, the hero color. Tune these to shift the whole
+     app's magenta in one place. */
+  --color-magenta-50: #fbe8f2;
+  --color-magenta-100: #f6cfe2;
+  --color-magenta-200: #eea3c8;
+  --color-magenta-300: #e074aa;
+  --color-magenta-400: #d0458c;
+  --color-magenta-500: #b91f6f;
+  --color-magenta-600: #a8155f;
+  --color-magenta-700: #86104a;
+  --color-magenta-800: #6b0c3b;
+  /* Plum — the ink color stretched into a scale. 900 *is* ink; it doubles as
+     the dark app chrome (sidebar + top bars), lighter steps are text on it. */
+  --color-plum-200: #dccbd7;
+  --color-plum-300: #bba3b5;
+  --color-plum-500: #7f6579;
+  /* Berry plum — a brighter, more saturated plum that reads as purple (not
+     black) in text. Used as a pop of color on key text, e.g. venue names. */
+  --color-plum-600: #6b2d5e;
+  --color-plum-800: #3d2739;
+  --color-plum-900: #2b1b29;
+  /* Fonts are injected by next/font in layout.tsx */
+  --font-sans: var(--font-poppins);
+  --font-display: var(--font-righteous);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
 }

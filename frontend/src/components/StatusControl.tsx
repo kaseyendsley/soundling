@@ -21,19 +21,20 @@ export default function StatusControl({
 
   function handleUpdate() {
     // TODO: POST the status change to the leads API once the backend exists.
+    // That write also bumps the lead's `lastContactedAt` to now.
   }
 
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
-        <label htmlFor="status-select" className="text-sm text-gray-600">
+        <label htmlFor="status-select" className="text-sm text-stone-600">
           Status
         </label>
         <select
           id="status-select"
           value={status}
           onChange={(e) => setStatus(e.target.value as LeadStatus)}
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-400 focus:outline-none"
+          className="rounded-full border border-stone-300 bg-white px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none"
         >
           {Object.entries(LEAD_STATUS_LABELS).map(([value, label]) => (
             <option key={value} value={value}>
@@ -48,7 +49,7 @@ export default function StatusControl({
         onChange={(e) => setNote(e.target.value)}
         rows={3}
         placeholder="Add a note about this change (optional)…"
-        className="w-full rounded-md border border-gray-300 p-3 text-sm focus:border-gray-400 focus:outline-none"
+        className="w-full rounded-2xl border border-stone-300 p-4 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none"
       />
 
       <div className="flex flex-wrap items-center gap-3">
@@ -56,7 +57,7 @@ export default function StatusControl({
           type="button"
           onClick={handleUpdate}
           disabled={!changed}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40 hover:bg-gray-700"
+          className="rounded-full bg-magenta-600 px-5 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40 hover:bg-magenta-700"
         >
           Update status
         </button>
@@ -66,7 +67,7 @@ export default function StatusControl({
             {LEAD_STATUS_LABELS[status]} (not saved yet)
           </span>
         ) : (
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-stone-400">
             Pick a new status to log an update — saves once the backend is wired
             up.
           </span>

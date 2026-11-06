@@ -9,8 +9,20 @@
 // `choices`. We store machine values here; human labels live in the maps below.
 // ---------------------------------------------------------------------------
 
-/** Venue category, in the client's outreach priority order. */
-export type VenueType = "restaurant" | "bar" | "venue";
+/** Business category — mirrors BMI's official license-type list exactly. */
+export type VenueType =
+  | "radio"
+  | "bar_restaurant_brewery"
+  | "residential_community"
+  | "healthcare_facility"
+  | "television"
+  | "fitness_club"
+  | "website_mobile_app"
+  | "retail"
+  | "hotel_lodging"
+  | "endurance_events"
+  | "political_entities"
+  | "rv_parks";
 
 /**
  * Where a lead is in the client's outreach workflow, in pipeline order:
@@ -98,6 +110,12 @@ export interface Lead {
   archived: boolean;
   /** When Soundling first discovered this venue (ISO datetime). */
   discoveredAt: string;
+  /**
+   * When the lead was last contacted — bumped on every status change. null
+   * until the first status update, so the client can sort to surface stale
+   * leads worth following up on.
+   */
+  lastContactedAt: string | null;
   /** People to reach at the venue (may be empty until contacts are found). */
   contacts: Contact[];
   /** Every individual discovery instance — confidence + audit trail. */
@@ -118,15 +136,24 @@ export interface Lead {
 // ---------------------------------------------------------------------------
 
 export const VENUE_TYPE_LABELS: Record<VenueType, string> = {
-  restaurant: "Restaurant",
-  bar: "Bar",
-  venue: "Venue",
+  radio: "Radio",
+  bar_restaurant_brewery: "Bar, Restaurant or Brewery",
+  residential_community: "Residential Community",
+  healthcare_facility: "Healthcare Facility",
+  television: "Television",
+  fitness_club: "Fitness Club",
+  website_mobile_app: "Website or Mobile App",
+  retail: "Retail",
+  hotel_lodging: "Hotel or Lodging",
+  endurance_events: "Endurance Events",
+  political_entities: "Political Entities",
+  rv_parks: "RV Parks",
 };
 
 export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
   new: "New",
   reached_out: "Reached Out",
-  in_communication: "In Communication",
+  in_communication: "In Contact",
   licensed: "Licensed",
   declined: "Declined",
 };
