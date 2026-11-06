@@ -27,14 +27,14 @@ export default function StatusControl({
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
-        <label htmlFor="status-select" className="text-sm text-stone-600">
+        <label htmlFor="status-select" className="text-sm text-ink-soft">
           Status
         </label>
         <select
           id="status-select"
           value={status}
           onChange={(e) => setStatus(e.target.value as LeadStatus)}
-          className="rounded-full border border-stone-300 bg-white px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none"
+          className="rounded-full border border-line-strong bg-surface px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-focus-ring focus:outline-none"
         >
           {Object.entries(LEAD_STATUS_LABELS).map(([value, label]) => (
             <option key={value} value={value}>
@@ -49,7 +49,7 @@ export default function StatusControl({
         onChange={(e) => setNote(e.target.value)}
         rows={3}
         placeholder="Add a note about this change (optional)…"
-        className="w-full rounded-2xl border border-stone-300 p-4 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none"
+        className="w-full rounded-2xl border border-line-strong bg-surface p-4 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-focus-ring focus:outline-none"
       />
 
       <div className="flex flex-wrap items-center gap-3">
@@ -62,12 +62,12 @@ export default function StatusControl({
           Update status
         </button>
         {changed ? (
-          <span className="text-xs text-amber-600">
+          <span className="text-xs text-amber-600 dark:text-amber-400">
             Will log: {LEAD_STATUS_LABELS[currentStatus]} →{" "}
             {LEAD_STATUS_LABELS[status]} (not saved yet)
           </span>
         ) : (
-          <span className="text-xs text-stone-400">
+          <span className="text-xs text-faint">
             Pick a new status to log an update — saves once the backend is wired
             up.
           </span>

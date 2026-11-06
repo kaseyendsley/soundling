@@ -3,9 +3,11 @@
 // "compact" variant (avatar + icons only) goes in the mobile top bar. Both sit
 // on the dark plum chrome, so text/icons use the light plum tones.
 //
-// There's no auth yet, so the user is hardcoded and the two buttons are
-// placeholders. Once Django auth exists, CURRENT_USER comes from the session
-// and the buttons get real handlers.
+// There's no auth yet, so the user is hardcoded and log out is a placeholder.
+// Once Django auth exists, CURRENT_USER comes from the session and log out
+// gets a real handler.
+
+import Link from "next/link";
 
 const CURRENT_USER = { name: "Kasey", email: "kasey@kaseyendsley.com" };
 
@@ -68,9 +70,10 @@ export default function SidebarUser({
           <p className="truncate text-xs text-plum-300">{email}</p>
         </div>
       )}
-      <button type="button" className={iconButton} aria-label="Settings" title="Settings">
+      {/* Navigation → a real link (not a button), so "open in new tab" works */}
+      <Link href="/dashboard/settings" className={iconButton} aria-label="Settings" title="Settings">
         <GearIcon />
-      </button>
+      </Link>
       <button type="button" className={iconButton} aria-label="Log out" title="Log out">
         <LogOutIcon />
       </button>

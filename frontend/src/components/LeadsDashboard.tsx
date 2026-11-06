@@ -77,11 +77,11 @@ export default function LeadsDashboard() {
     <div className="space-y-6">
       {/* Stats bar + view toggle */}
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-        <div className="flex flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-1 rounded-2xl border border-stone-200 bg-white px-6 py-3 text-center text-sm">
+        <div className="flex flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-1 rounded-2xl border border-line bg-surface px-6 py-3 text-center text-sm">
           {stats.map((stat) => (
-            <span key={stat.label} className="text-stone-500">
+            <span key={stat.label} className="text-muted">
               {stat.label}:{" "}
-              <span className="font-semibold text-plum-600">{stat.value}</span>
+              <span className="font-semibold text-accent">{stat.value}</span>
             </span>
           ))}
         </div>
@@ -90,7 +90,7 @@ export default function LeadsDashboard() {
           <button
             type="button"
             onClick={() => setView("archived")}
-            className="shrink-0 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-600 hover:border-magenta-300 hover:text-magenta-700"
+            className="shrink-0 rounded-full border border-line-strong bg-surface px-4 py-2 text-sm font-medium text-ink-soft hover:border-magenta-300 hover:text-link"
           >
             Archived Leads ({archivedCount}) →
           </button>
@@ -98,7 +98,7 @@ export default function LeadsDashboard() {
           <button
             type="button"
             onClick={() => setView("active")}
-            className="shrink-0 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-600 hover:border-magenta-300 hover:text-magenta-700"
+            className="shrink-0 rounded-full border border-line-strong bg-surface px-4 py-2 text-sm font-medium text-ink-soft hover:border-magenta-300 hover:text-link"
           >
             ← Active Leads ({activeCount})
           </button>
