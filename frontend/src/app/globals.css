@@ -1,18 +1,89 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: `dark:` utilities apply inside <html class="dark">
+   (toggled by next-themes from the Settings page) rather than following the
+   OS setting, which is Tailwind's default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Soundling design tokens.
    Warm 70s palette: cream canvas, white surfaces, magenta hero, plum ink,
-   deep plum chrome. */
+   deep plum chrome.
+
+   Two layers:
+   1. SEMANTIC tokens (below) name a color by its *job* — "card surface",
+      "secondary text" — and get a value per theme. Components use these
+      (`bg-surface`, `text-muted`), so they get dark mode for free.
+   2. BRAND scales (magenta, plum in @theme) are fixed colors. Use them
+      directly only where a color should look the same in both themes
+      (e.g. the plum sidebar, magenta buttons). */
 :root {
-  --background: #faf4ee; /* warm cream */
-  --foreground: #2b1b29; /* deep plum ink */
+  /* Backgrounds */
+  --canvas: #faf4ee; /* page — warm cream */
+  --topbar: #2b1b29; /* desktop top bar — deep plum */
+  --topbar-line: #2b1b29; /* same as the bar, so no visible line in light */
+  --surface: #ffffff; /* cards, table, inputs */
+  --surface-muted: oklch(98.5% 0.001 106.423); /* table head, row hover (stone-50) */
+  /* Borders */
+  --line: oklch(92.3% 0.003 48.717); /* card borders (stone-200) */
+  --line-subtle: oklch(97% 0.001 106.424); /* row dividers (stone-100) */
+  --line-strong: oklch(86.9% 0.005 56.366); /* input + button borders (stone-300) */
+  /* Text, strongest → weakest */
+  --ink: #2b1b29; /* primary — deep plum ink */
+  --ink-soft: oklch(44.4% 0.011 73.639); /* table cells, body copy (stone-600) */
+  --muted: oklch(55.3% 0.013 58.071); /* labels, secondary (stone-500) */
+  --faint: oklch(70.9% 0.01 56.259); /* hints, empty states (stone-400) */
+  --fainter: oklch(86.9% 0.005 56.366); /* inactive sort arrows (stone-300) */
+  /* Brand-colored text + tints */
+  --accent: #6b2d5e; /* berry plum — venue names, tallies, headings */
+  --link: #86104a; /* links + hover text (magenta-700) */
+  --brand-tint: #fbe8f2; /* soft magenta hover background (magenta-50) */
+  --focus-ring: #f6cfe2; /* input focus glow (magenta-100) */
+}
+
+/* Dark values. Near-black with a hint of plum instead of pure #000 (harsh,
+   makes text "glow"), and soft cream text instead of pure white. Each step up
+   in surface is a little lighter, which is how dark UIs show depth. */
+.dark {
+  --canvas: #0e0b0d;
+  --topbar: #0e0b0d; /* matches the page; the line below separates them */
+  --topbar-line: #2e252c;
+  --surface: #1a1419;
+  --surface-muted: #221a20;
+  --line: #2e252c;
+  --line-subtle: #261e24;
+  --line-strong: #3d3239;
+  --ink: #f5eee8;
+  --ink-soft: #cdbfc8;
+  --muted: #a89ba4;
+  --faint: #7d6f78;
+  --fainter: #4d4049;
+  --accent: #e3a8d2; /* orchid — berry is too dark to read on black */
+  --link: #e074aa; /* magenta-300 */
+  --brand-tint: rgb(208 69 140 / 0.15);
+  --focus-ring: rgb(208 69 140 / 0.35);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Semantic tokens → Tailwind utilities (bg-surface, text-muted, …) */
+  --color-canvas: var(--canvas);
+  --color-topbar: var(--topbar);
+  --color-topbar-line: var(--topbar-line);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-line-subtle: var(--line-subtle);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-fainter: var(--fainter);
+  --color-accent: var(--accent);
+  --color-link: var(--link);
+  --color-brand-tint: var(--brand-tint);
+  --color-focus-ring: var(--focus-ring);
+
   --color-cream: #faf4ee;
-  --color-ink: #2b1b29;
   /* Brand magenta — deep + true, the hero color. Tune these to shift the whole
      app's magenta in one place. */
   --color-magenta-50: #fbe8f2;
@@ -24,14 +95,11 @@
   --color-magenta-600: #a8155f;
   --color-magenta-700: #86104a;
   --color-magenta-800: #6b0c3b;
-  /* Plum — the ink color stretched into a scale. 900 *is* ink; it doubles as
-     the dark app chrome (sidebar + top bars), lighter steps are text on it. */
+  /* Plum — the ink color stretched into a scale. 900 is the dark app chrome
+     (sidebar + mobile bar), lighter steps are text on it. */
   --color-plum-200: #dccbd7;
   --color-plum-300: #bba3b5;
   --color-plum-500: #7f6579;
-  /* Berry plum — a brighter, more saturated plum that reads as purple (not
-     black) in text. Used as a pop of color on key text, e.g. venue names. */
-  --color-plum-600: #6b2d5e;
   --color-plum-800: #3d2739;
   --color-plum-900: #2b1b29;
   /* Fonts are injected by next/font in layout.tsx */
@@ -40,7 +108,7 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--canvas);
+  color: var(--ink);
   font-family: var(--font-poppins), system-ui, sans-serif;
 }

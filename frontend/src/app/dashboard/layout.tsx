@@ -25,7 +25,7 @@ export default function DashboardLayout({
 }) {
   return (
     <DashboardHeaderProvider>
-      <div className="flex min-h-screen flex-col bg-cream text-ink md:flex-row">
+      <div className="flex min-h-screen flex-col bg-canvas text-ink md:flex-row">
       {/* Sidebar — md and up */}
       {/* sticky + h-screen keeps the user block pinned to the bottom while the page scrolls */}
       <aside className="sticky top-0 hidden h-screen w-52 shrink-0 flex-col border-r border-plum-800 bg-plum-900 md:flex">
@@ -52,8 +52,9 @@ export default function DashboardLayout({
       <div className="flex flex-1 flex-col">
         {/* Desktop header — sticky so it stays pinned while the page scrolls;
             z-10 keeps table content (e.g. the venue cells' link overlays)
-            sliding *under* it rather than over it. */}
-        <header className="sticky top-0 z-10 hidden h-[70px] items-center bg-plum-900 px-8 md:flex">
+            sliding *under* it rather than over it. Plum in light mode; in dark
+            mode it's black like the page, with a thin line separating them. */}
+        <header className="sticky top-0 z-10 hidden h-[70px] items-center border-b border-topbar-line bg-topbar px-8 md:flex">
           <DashboardTitle />
         </header>
         <main className="flex-1 p-5 sm:p-8">{children}</main>

@@ -24,7 +24,7 @@ export default function NoteEditor({ initialNote }: { initialNote: string }) {
         onChange={(e) => setNote(e.target.value)}
         rows={4}
         placeholder="Add a note about this venue…"
-        className="w-full rounded-2xl border border-stone-300 p-4 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none"
+        className="w-full rounded-2xl border border-line-strong bg-surface p-4 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-focus-ring focus:outline-none"
       />
       <div className="flex flex-wrap items-center gap-3">
         <button
@@ -36,9 +36,9 @@ export default function NoteEditor({ initialNote }: { initialNote: string }) {
           Save note
         </button>
         {dirty ? (
-          <span className="text-xs text-amber-600">Unsaved changes</span>
+          <span className="text-xs text-amber-600 dark:text-amber-400">Unsaved changes</span>
         ) : (
-          <span className="text-xs text-stone-400">
+          <span className="text-xs text-faint">
             Not yet persisted — saves to the database once the backend is wired
             up.
           </span>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Righteous } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./QueryProvider";
+import ThemeProvider from "./ThemeProvider";
 
 // Poppins: clean rounded geometric sans for all UI text.
 const poppins = Poppins({
@@ -28,11 +29,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: next-themes adds class="dark" to <html> before
+    // React loads, so the server's <html> and the browser's legitimately
+    // differ. This silences that one expected mismatch (it only applies to
+    // this element's own attributes, not its children).
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${poppins.variable} ${righteous.variable} antialiased`}
       >
-        <QueryProvider>{children}</QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

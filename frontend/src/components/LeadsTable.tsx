@@ -128,8 +128,8 @@ export default function LeadsTable({
     query || typeFilter !== "all" || statusFilter !== "all" || fromDate || toDate;
 
   const selectClass =
-    "rounded-full border border-stone-300 bg-white px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none";
-  const labelClass = "text-xs font-medium text-stone-500";
+    "rounded-full border border-line-strong bg-surface px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-focus-ring focus:outline-none";
+  const labelClass = "text-xs font-medium text-muted";
 
   // Clicking a header: same column flips direction; a new column adopts its
   // default direction.
@@ -149,12 +149,12 @@ export default function LeadsTable({
         <button
           type="button"
           onClick={() => handleSort(key)}
-          className="inline-flex items-center gap-1 whitespace-nowrap font-semibold uppercase tracking-wide text-stone-500 hover:text-magenta-700"
+          className="inline-flex items-center gap-1 whitespace-nowrap font-semibold uppercase tracking-wide text-muted hover:text-link"
         >
           {label}
           {/* Always show the triangle so every sortable column is discoverable;
               it's faint until the column is the active sort. */}
-          <span className={active ? "text-stone-500" : "text-stone-300"}>
+          <span className={active ? "text-muted" : "text-fainter"}>
             {active && sortDir === "asc" ? "▲" : "▼"}
           </span>
         </button>
@@ -173,7 +173,7 @@ export default function LeadsTable({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Name or address"
-            className="w-full rounded-full border border-stone-300 bg-white px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-magenta-100 focus:outline-none sm:w-64"
+            className="w-full rounded-full border border-line-strong bg-surface px-4 py-2 text-sm focus:border-magenta-400 focus:ring-2 focus:ring-focus-ring focus:outline-none sm:w-64"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -234,7 +234,7 @@ export default function LeadsTable({
               setFromDate("");
               setToDate("");
             }}
-            className="rounded-full px-4 py-2 text-sm font-medium text-magenta-700 hover:bg-magenta-50"
+            className="rounded-full px-4 py-2 text-sm font-medium text-link hover:bg-brand-tint"
           >
             Clear
           </button>
@@ -242,9 +242,9 @@ export default function LeadsTable({
       </div>
 
       {/* Table — scrolls horizontally on small screens so it never breaks */}
-      <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white">
-        <table className="w-full min-w-[960px] divide-y divide-stone-200 text-sm">
-          <thead className="bg-stone-50 text-left text-xs font-semibold uppercase tracking-wide text-stone-500">
+      <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
+        <table className="w-full min-w-[960px] divide-y divide-line text-sm">
+          <thead className="bg-surface-muted text-left text-xs font-semibold uppercase tracking-wide text-muted">
             <tr>
               <th className="px-6 py-3.5">Venue</th>
               <th className="px-6 py-3.5">Type</th>
@@ -259,42 +259,42 @@ export default function LeadsTable({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-stone-100">
+          <tbody className="divide-y divide-line-subtle">
             {pageRows.map((lead) => (
-              <tr key={lead.id} className="hover:bg-stone-50/70">
+              <tr key={lead.id} className="hover:bg-surface-muted/70">
                 {/* "Stretched link": the name's ::after overlay covers this whole
                     (relative) cell, so the name + address are one click target
                     without making the row clickable over the status controls. */}
                 <td className="group relative cursor-pointer px-6 py-4">
                   <Link
                     href={`/dashboard/leads/${lead.id}`}
-                    className="font-semibold text-plum-600 after:absolute after:inset-0 group-hover:text-magenta-700 group-hover:underline"
+                    className="font-semibold text-accent after:absolute after:inset-0 group-hover:text-link group-hover:underline"
                   >
                     {lead.name}
                   </Link>
-                  <div className="text-stone-500">
+                  <div className="text-muted">
                     {lead.streetAddress}, {lead.city}, {lead.state}{" "}
                     {lead.postalCode}
                   </div>
                 </td>
-                <td className="px-6 py-4 text-stone-600">
+                <td className="px-6 py-4 text-ink-soft">
                   {VENUE_TYPE_LABELS[lead.type]}
                 </td>
-                <td className="px-6 py-4 text-stone-600">
+                <td className="px-6 py-4 text-ink-soft">
                   {SIGNAL_LABELS[lead.signal]}
                 </td>
-                <td className="px-6 py-4 text-stone-600">
+                <td className="px-6 py-4 text-ink-soft">
                   {formatDate(lead.openedDate)}
                 </td>
-                <td className="px-6 py-4 text-stone-600">
+                <td className="px-6 py-4 text-ink-soft">
                   {formatDate(lead.discoveredAt)}
                 </td>
-                <td className="px-6 py-4 text-stone-600">
+                <td className="px-6 py-4 text-ink-soft">
                   {lead.lastContactedAt
                     ? formatDate(lead.lastContactedAt)
                     : "N/A"}
                 </td>
-                <td className="px-6 py-4 text-stone-600">{lead.sources.length}</td>
+                <td className="px-6 py-4 text-ink-soft">{lead.sources.length}</td>
                 <td className="px-6 py-4">
                   <StatusBadge status={lead.status} />
                 </td>
@@ -304,8 +304,8 @@ export default function LeadsTable({
                     onClick={() => onToggleArchived(lead.id)}
                     className={`rounded-full border px-3 py-1 text-xs font-medium ${
                       view === "active"
-                        ? "border-red-200 text-red-600 hover:border-red-300 hover:bg-red-50"
-                        : "border-green-200 text-green-700 hover:border-green-300 hover:bg-green-50"
+                        ? "border-red-200 text-red-600 hover:border-red-300 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:border-red-700 dark:hover:bg-red-950"
+                        : "border-green-200 text-green-700 hover:border-green-300 hover:bg-green-50 dark:border-green-900 dark:text-green-400 dark:hover:border-green-700 dark:hover:bg-green-950"
                     }`}
                   >
                     {view === "active" ? "Archive" : "Restore"}
@@ -315,7 +315,7 @@ export default function LeadsTable({
             ))}
             {pageRows.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-6 py-12 text-center text-stone-500">
+                <td colSpan={9} className="px-6 py-12 text-center text-muted">
                   {view === "archived"
                     ? "No archived leads match your filters."
                     : "No leads match your filters."}
@@ -327,7 +327,7 @@ export default function LeadsTable({
       </div>
 
       {/* Pagination footer */}
-      <div className="flex flex-col gap-3 text-sm text-stone-600 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between">
         <span>
           {filteredSorted.length === 0
             ? "No results"
@@ -338,18 +338,18 @@ export default function LeadsTable({
             type="button"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={currentPage <= 1}
-            className="rounded-full border border-stone-300 px-4 py-1.5 font-medium disabled:cursor-not-allowed disabled:opacity-40 hover:bg-stone-50"
+            className="rounded-full border border-line-strong px-4 py-1.5 font-medium disabled:cursor-not-allowed disabled:opacity-40 hover:bg-surface-muted"
           >
             Previous
           </button>
-          <span className="text-stone-500">
+          <span className="text-muted">
             Page {currentPage} of {totalPages}
           </span>
           <button
             type="button"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage >= totalPages}
-            className="rounded-full border border-stone-300 px-4 py-1.5 font-medium disabled:cursor-not-allowed disabled:opacity-40 hover:bg-stone-50"
+            className="rounded-full border border-line-strong px-4 py-1.5 font-medium disabled:cursor-not-allowed disabled:opacity-40 hover:bg-surface-muted"
           >
             Next
           </button>

@@ -29,8 +29,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-stone-200 bg-white p-6">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-stone-500">
+    <section className="rounded-2xl border border-line bg-surface p-6">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">
         {title}
       </h2>
       {children}
@@ -42,7 +42,7 @@ function BackLink() {
   return (
     <Link
       href="/dashboard"
-      className="inline-flex items-center text-sm text-stone-500 hover:text-ink"
+      className="inline-flex items-center text-sm text-muted hover:text-ink"
     >
       ← Back to leads
     </Link>
@@ -66,7 +66,7 @@ export default function LeadDetail({ id }: { id: string }) {
     return (
       <div className="mx-auto max-w-3xl space-y-6">
         <BackLink />
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-muted">
           {loaded ? "Lead not found." : "Loading…"}
         </p>
       </div>
@@ -83,13 +83,13 @@ export default function LeadDetail({ id }: { id: string }) {
           <h1 className="font-display text-3xl tracking-wide text-ink">
             {lead.name}
           </h1>
-          <p className="mt-1 text-stone-500">
+          <p className="mt-1 text-muted">
             {lead.streetAddress}, {lead.city}, {lead.state} {lead.postalCode}
           </p>
         </div>
         <div className="flex items-center gap-2">
           {lead.archived && (
-            <span className="inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-600 ring-1 ring-inset ring-stone-500/20">
+            <span className="inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-xs font-medium text-ink-soft ring-1 ring-inset ring-stone-500/20 dark:bg-white/5 dark:ring-white/10">
               Archived
             </span>
           )}
@@ -101,23 +101,23 @@ export default function LeadDetail({ id }: { id: string }) {
       <Section title="Overview">
         <dl className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:grid-cols-4">
           <div>
-            <dt className="text-stone-500">Type</dt>
+            <dt className="text-muted">Type</dt>
             <dd className="mt-1 text-ink">{VENUE_TYPE_LABELS[lead.type]}</dd>
           </div>
           <div>
-            <dt className="text-stone-500">Signal</dt>
+            <dt className="text-muted">Signal</dt>
             <dd className="mt-1 text-ink">{SIGNAL_LABELS[lead.signal]}</dd>
           </div>
           <div>
-            <dt className="text-stone-500">Opened</dt>
+            <dt className="text-muted">Opened</dt>
             <dd className="mt-1 text-ink">{formatDate(lead.openedDate)}</dd>
           </div>
           <div>
-            <dt className="text-stone-500">Generated</dt>
+            <dt className="text-muted">Generated</dt>
             <dd className="mt-1 text-ink">{formatDate(lead.discoveredAt)}</dd>
           </div>
           <div>
-            <dt className="text-stone-500">Last contact</dt>
+            <dt className="text-muted">Last contact</dt>
             <dd className="mt-1 text-ink">
               {lead.lastContactedAt ? formatDate(lead.lastContactedAt) : "N/A"}
             </dd>
@@ -138,20 +138,20 @@ export default function LeadDetail({ id }: { id: string }) {
       {/* Contacts */}
       <Section title={`Contacts (${lead.contacts.length})`}>
         {lead.contacts.length === 0 ? (
-          <p className="text-sm text-stone-400">No contacts found yet.</p>
+          <p className="text-sm text-faint">No contacts found yet.</p>
         ) : (
-          <ul className="divide-y divide-stone-100">
+          <ul className="divide-y divide-line-subtle">
             {lead.contacts.map((contact) => (
               <li key={contact.id} className="py-3 first:pt-0 last:pb-0">
                 <div className="font-medium text-ink">
                   {contact.name}
                   {contact.role && (
-                    <span className="ml-2 text-sm font-normal text-stone-500">
+                    <span className="ml-2 text-sm font-normal text-muted">
                       {contact.role}
                     </span>
                   )}
                 </div>
-                <div className="mt-1 flex flex-wrap gap-x-6 gap-y-1 text-sm text-stone-600">
+                <div className="mt-1 flex flex-wrap gap-x-6 gap-y-1 text-sm text-ink-soft">
                   {contact.phone ? (
                     <a
                       href={`tel:${contact.phone}`}
@@ -160,7 +160,7 @@ export default function LeadDetail({ id }: { id: string }) {
                       {contact.phone}
                     </a>
                   ) : (
-                    <span className="text-stone-400">No phone</span>
+                    <span className="text-faint">No phone</span>
                   )}
                   {contact.email ? (
                     <a
@@ -170,7 +170,7 @@ export default function LeadDetail({ id }: { id: string }) {
                       {contact.email}
                     </a>
                   ) : (
-                    <span className="text-stone-400">No email</span>
+                    <span className="text-faint">No email</span>
                   )}
                 </div>
               </li>
@@ -181,7 +181,7 @@ export default function LeadDetail({ id }: { id: string }) {
 
       {/* Sources — the audit trail */}
       <Section title={`Sources (${lead.sources.length})`}>
-        <ul className="divide-y divide-stone-100">
+        <ul className="divide-y divide-line-subtle">
           {lead.sources.map((source) => (
             <li
               key={source.id}
@@ -189,7 +189,7 @@ export default function LeadDetail({ id }: { id: string }) {
             >
               <div>
                 <div className="font-medium text-ink">{source.source}</div>
-                <div className="text-stone-500">
+                <div className="text-muted">
                   Found {formatDate(source.discoveredAt)}
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function LeadDetail({ id }: { id: string }) {
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-magenta-700 hover:underline"
+                  className="text-link hover:underline"
                 >
                   View source →
                 </a>
@@ -218,11 +218,11 @@ export default function LeadDetail({ id }: { id: string }) {
                   ? `${LEAD_STATUS_LABELS[change.fromStatus]} → ${LEAD_STATUS_LABELS[change.toStatus]}`
                   : `Discovered as ${LEAD_STATUS_LABELS[change.toStatus]}`}
               </div>
-              <div className="mt-0.5 text-stone-500">
+              <div className="mt-0.5 text-muted">
                 {change.changedBy ?? "System"} · {formatDate(change.changedAt)}
               </div>
               {change.note && (
-                <p className="mt-1 text-stone-600">{change.note}</p>
+                <p className="mt-1 text-ink-soft">{change.note}</p>
               )}
             </li>
           ))}
