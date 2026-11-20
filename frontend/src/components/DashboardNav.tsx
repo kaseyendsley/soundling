@@ -11,8 +11,8 @@ type NavItem = { label: string; href: string; disabled?: boolean };
 const NAV_ITEMS: NavItem[] = [
   { label: "Leads", href: "/dashboard" },
   { label: "Add Lead", href: "/dashboard/leads/new" },
-  { label: "Schedule", href: "#", disabled: true },
-  { label: "Sources", href: "#", disabled: true },
+  { label: "Schedule", href: "/dashboard/schedule" },
+  { label: "Sources", href: "/dashboard/sources" },
 ];
 
 function isActive(href: string, pathname: string) {

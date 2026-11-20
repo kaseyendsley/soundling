@@ -162,3 +162,103 @@ export const SIGNAL_LABELS: Record<DiscoverySignal, string> = {
   pre_opening: "Pre-opening",
   recently_opened: "Recently opened",
 };
+
+// ---------------------------------------------------------------------------
+// Pipeline — the scraper side of Soundling. Where leads come from
+// (DataSource), when the scanner runs (ScheduleConfig), and what each run did
+// (ScrapeRun). Like the lead types above, these mirror the future backend.
+// ---------------------------------------------------------------------------
+
+/**
+ * - active: checked on every run
+ * - paused: built, but switched off (e.g. the site changed and broke it)
+ * - planned: on the roadmap, not built yet (e.g. state liquor-license feeds)
+ */
+export type SourceStatus = "active" | "paused" | "planned";
+
+/** One pluggable connector the scanner pulls venues from. */
+export interface DataSource {
+  /** Stable machine id, e.g. "google_places". */
+  id: string;
+  /** Display name. Matches `SourceRecord.source` on the leads it finds. */
+  name: string;
+  /** One line on what this source looks for. */
+  description: string;
+  /** Which discovery tier its leads fall into. */
+  signal: DiscoverySignal;
+  status: SourceStatus;
+  /** Where it has data, e.g. "Nationwide" or "California". */
+  coverage: string;
+  /** When it was last checked (ISO datetime). null if it never has been. */
+  lastRunAt: string | null;
+  /** How many leads it has contributed a source record to, all time. */
+  leadsContributed: number;
+}
+
+export type ScheduleFrequency = "daily" | "weekly";
+
+/** When the automated scan runs. A single record — there's one schedule. */
+export interface ScheduleConfig {
+  enabled: boolean;
+  frequency: ScheduleFrequency;
+  /** Local time of day, 24-hour "HH:MM", e.g. "05:00". */
+  runAt: string;
+  /** IANA timezone `runAt` is in, e.g. "America/Chicago". */
+  timezone: string;
+}
+
+export type RunStatus = "running" | "success" | "partial" | "failed";
+export type RunTrigger = "scheduled" | "manual";
+
+/** How one source did within a single run. */
+export interface SourceRunResult {
+  sourceId: string;
+  status: "success" | "failed";
+  /** Venues this source returned — including ones we already had. */
+  found: number;
+  /** What went wrong, when status is "failed". */
+  error: string | null;
+}
+
+/**
+ * One execution of the scanner. `status` summarizes `sourceResults`:
+ * all succeeded → success, some failed → partial, all failed → failed.
+ */
+export interface ScrapeRun {
+  id: string;
+  trigger: RunTrigger;
+  status: RunStatus;
+  startedAt: string;
+  /** null while the run is still going. */
+  finishedAt: string | null;
+  /**
+   * Brand-new leads this run created, AFTER deduplication. Deliberately not a
+   * per-source number: if Yelp and Google both find the same new bar, that's
+   * one new lead, not two.
+   */
+  newLeads: number;
+  sourceResults: SourceRunResult[];
+}
+
+export const SOURCE_STATUS_LABELS: Record<SourceStatus, string> = {
+  active: "Active",
+  paused: "Paused",
+  planned: "Planned",
+};
+
+export const RUN_STATUS_LABELS: Record<RunStatus, string> = {
+  running: "Running",
+  success: "Success",
+  partial: "Partial",
+  failed: "Failed",
+};
+
+export const RUN_TRIGGER_LABELS: Record<RunTrigger, string> = {
+  scheduled: "Scheduled",
+  manual: "Manual",
+};
+
+export const FREQUENCY_LABELS: Record<ScheduleFrequency, string> = {
+  daily: "Every day",
+  weekly: "Every week",
+};

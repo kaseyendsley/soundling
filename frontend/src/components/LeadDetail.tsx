@@ -7,6 +7,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Card from "./Card";
 import NoteEditor from "./NoteEditor";
 import StatusControl from "./StatusControl";
 import { StatusBadge } from "./StatusBadge";
@@ -19,24 +20,6 @@ import {
   VENUE_TYPE_LABELS,
   type Lead,
 } from "@/lib/types";
-
-// A labelled card section, reused for each block on the page.
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="rounded-2xl border border-line bg-surface p-6">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">
-        {title}
-      </h2>
-      {children}
-    </section>
-  );
-}
 
 function BackLink() {
   return (
@@ -98,7 +81,7 @@ export default function LeadDetail({ id }: { id: string }) {
       </div>
 
       {/* Overview */}
-      <Section title="Overview">
+      <Card title="Overview">
         <dl className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:grid-cols-4">
           <div>
             <dt className="text-muted">Type</dt>
@@ -123,20 +106,20 @@ export default function LeadDetail({ id }: { id: string }) {
             </dd>
           </div>
         </dl>
-      </Section>
+      </Card>
 
       {/* Venue notes first — surfaced above status so important info is seen first */}
-      <Section title="Venue Notes">
+      <Card title="Venue Notes">
         <NoteEditor initialNote={lead.note} />
-      </Section>
+      </Card>
 
       {/* Status management (change status + record a note about the change) */}
-      <Section title="Status">
+      <Card title="Status">
         <StatusControl currentStatus={lead.status} />
-      </Section>
+      </Card>
 
       {/* Contacts */}
-      <Section title={`Contacts (${lead.contacts.length})`}>
+      <Card title={`Contacts (${lead.contacts.length})`}>
         {lead.contacts.length === 0 ? (
           <p className="text-sm text-faint">No contacts found yet.</p>
         ) : (
@@ -177,10 +160,10 @@ export default function LeadDetail({ id }: { id: string }) {
             ))}
           </ul>
         )}
-      </Section>
+      </Card>
 
       {/* Sources — the audit trail */}
-      <Section title={`Sources (${lead.sources.length})`}>
+      <Card title={`Sources (${lead.sources.length})`}>
         <ul className="divide-y divide-line-subtle">
           {lead.sources.map((source) => (
             <li
@@ -206,10 +189,10 @@ export default function LeadDetail({ id }: { id: string }) {
             </li>
           ))}
         </ul>
-      </Section>
+      </Card>
 
       {/* Status timeline */}
-      <Section title="Status history">
+      <Card title="Status history">
         <ol className="space-y-4">
           {lead.statusHistory.map((change) => (
             <li key={change.id} className="text-sm">
@@ -227,7 +210,7 @@ export default function LeadDetail({ id }: { id: string }) {
             </li>
           ))}
         </ol>
-      </Section>
+      </Card>
     </div>
   );
 }
