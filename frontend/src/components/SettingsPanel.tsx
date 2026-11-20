@@ -5,6 +5,7 @@
 // the topbar title (same pattern as LeadsDashboard and AddLeadForm).
 
 import { useEffect } from "react";
+import Card from "./Card";
 import { useDashboardHeader } from "./DashboardHeaderContext";
 import ThemeToggle from "./ThemeToggle";
 
@@ -18,10 +19,7 @@ export default function SettingsPanel() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <section className="rounded-2xl border border-line bg-surface p-6">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">
-          Appearance
-        </h2>
+      <Card title="Appearance">
         <div className="flex items-center justify-between gap-6">
           <div>
             <p id="dark-mode-label" className="font-medium text-ink">
@@ -33,7 +31,7 @@ export default function SettingsPanel() {
           </div>
           <ThemeToggle labelId="dark-mode-label" />
         </div>
-      </section>
+      </Card>
     </div>
   );
 }

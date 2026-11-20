@@ -8,6 +8,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import LeadsTable from "./LeadsTable";
+import SampleDataNote from "./SampleDataNote";
 import { useDashboardHeader } from "./DashboardHeaderContext";
 import { getAllLeads } from "@/lib/leadsStore";
 import { MOCK_LEADS } from "@/lib/mock-leads";
@@ -75,6 +76,8 @@ export default function LeadsDashboard() {
 
   return (
     <div className="space-y-6">
+      <SampleDataNote>Preview: includes sample leads until the scraper is live</SampleDataNote>
+
       {/* Stats bar + view toggle */}
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-wrap items-center justify-between gap-x-5 gap-y-1 rounded-2xl border border-line bg-surface px-6 py-3 text-center text-sm">
